@@ -28,8 +28,10 @@ let snakeBody = []
 //food
 let foodX;
 let foodY;
-
+//gameover
 let gameOver = false;
+
+
 window.onload = function() {
   board = document.getElementById("board");
   board.height = rows * blockSize;
@@ -47,6 +49,7 @@ function update() {
   if (gameOver) {
     return;
   }
+
   context.fillStyle="black";
   context.fillRect(0, 0 , board.width, board.height);
 
@@ -60,7 +63,6 @@ function update() {
 
   for (let i = snakeBody.length-1; i > 0; i--) {
     snakeBody[i] = snakeBody[i-1];
-
   }
   if (snakeBody.length) {
     snakeBody[0] = [SnakeX, SnakeY]
@@ -73,19 +75,23 @@ function update() {
   for (let i = 0; i , snakeBody.length; i++) {
     context.fillRect(snakeBody[i][0], snakeBody[i][1], blockSize, blockSize);
   }
-}
-//game over conditions
- if (SnakeX < 0 || SnakeX > cols*blockSize || SnakeY < 0 || SnakeY > rows*blockSize ) {
-   gameOver = true;
-   alert("Game Over");
+
+ //game over conditions
+ //wall hit
+ if (SnakeX < 0 || SnakeX > cols*blockSize || SnakeY < 0 || SnakeY > rows*blockSize) {
+      gameOver = true;
+      alert("Game Over");
  }
 
+  //friendly fire
  for (let i = 0; i < snakeBody.length; i++) {
-   if (SnakeX == snakeBody[i][0] && SnakeY == snakeBody[i][1]) {
-     gameOver = true;
-     alert("Game Over");
-   }
- }
+    if (SnakeX == snakeBody[i][0] && SnakeY == snakeBody[i][1]) {
+       gameOver = true;
+       alert("Game Over");
+    }
+  } 
+}
+
 
 function changeDirection(e) {
   if (e.code == "ArrowUp" && velocityY != 1) {
